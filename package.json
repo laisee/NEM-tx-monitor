@@ -1,0 +1,20 @@
+{
+  "name": "abele_ethmonitor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "nem-sdk": "^1.6.7",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2",
+    "sync-request": "^6.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
