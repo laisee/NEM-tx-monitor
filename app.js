@@ -15,7 +15,7 @@ const port    = process.env.PORT || 8080;
 // convert to read this from Env setting
 let deposit_address_list = addy.getAddressList('nem');
 let nem_server           = nem.getNEMServer();
-const update_url         = process.env.API_UPDATE_URL || 'https://api.abelegroup.io/monitoring/update_transaction';
+const update_url         = process.env.NEM_UPDATE_URL
 
 // parse application/json
 app.use(bodyParser.json())
