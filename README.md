@@ -5,5 +5,5 @@ Instructions:
 
 1. check out the code
 2. add new heroku app
-3. assign one or more BCH addresses to the Heroku config setting => "heroku config:set NEM_ADDRESS_LIST=XXX,YYY,ZZZ"
+3. assign one or more NEM addresses to the Heroku config setting => "heroku config:set NEM_ADDRESS_LIST=XXX,YYY,ZZZ"
    assign separate addresses by use of commas
