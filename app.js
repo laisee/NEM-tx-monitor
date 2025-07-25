@@ -3,8 +3,7 @@ const nem         = require('./utils/nem');
 const nemsdk      = require('nem-sdk').default;
 const bodyParser  = require('body-parser');
 const express 	  = require('express');
-const request     = require('request-promise');
-const rp          = require('request-promise');
+const axios       = require('axios');
   
 
 const app         = express()
@@ -42,9 +41,9 @@ app.post('/transaction/update', function(req, res) {
   for (var address of deposit_address_list) {
     let url = 'http://'+ nem_server + '/account/transfers/incoming?address=' + address;
     console.log("processing deposit address "+address+" by checking URL "+url);
-    var options = { uri: url, json: true };
-    promises.push(rp(options)
-      .then(function(body) {
+    promises.push(axios.get(url)
+      .then(function(response) {
+        const body = response.data;
         console.log("TXN List for "+body.data.length+" NEM transactions ");
         if (body && body.data.length > 0) {
           for (var txn of body.data) {
@@ -59,19 +58,18 @@ app.post('/transaction/update', function(req, res) {
             data["currency"] = 'NEM';
             count++;
             total += txn.value;
-            request.post({
-              url: update_url,
-              method: "POST",
-              json: true,
-              body: data
-            },
-            function (error, response, body) {
-              if (response.statusCode == 200) {
+            axios.post(update_url, data)
+            .then(function (response) {
+              if (response.status == 200) {
                 console.log("Updated "+ data.tx_hash+ " successfully for sender "+data.wallet_address);
               } else {
-                console.log("Update of txn "+txn.meta.hash.data+ " failed wallet"+nemsdk.model.address.toAddress(txn.transaction.signer, 104)+" Status "+response.statusCode);
-                errors.push("Error " +response.statusCode+"  while updating wallet "+error);
+                console.log("Update of txn "+txn.meta.hash.data+ " failed wallet"+nemsdk.model.address.toAddress(txn.transaction.signer, 104)+" Status "+response.status);
+                errors.push("Error " +response.status+"  while updating wallet");
               }
+            })
+            .catch(function (error) {
+              console.log("Update of txn "+txn.meta.hash.data+ " failed with error: "+error.message);
+              errors.push("Error while updating wallet: "+error.message);
             });
           }
           console.log("Process "+count+" transactions for a total of "+total+" NEM");
