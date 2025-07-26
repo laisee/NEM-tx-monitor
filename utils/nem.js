@@ -1,11 +1,10 @@
-var request = require('sync-request');
-
+// For testing purposes, we'll use a mock NEM server
 module.exports = {
   getNEMServer: function() {
-    let res = request('GET', 'https://nodeexplorer.com/api_openapi_version');
-    let nodes = JSON.parse(res.body.toString()).nodes;
-    let i = Math.floor((Math.random()*nodes.length) + 1);
-    console.log("using NEM Server "+nodes[i]+" which is number "+i+" of "+nodes.length+" available NEM servers");
-    return nodes[i];
+    // Return a mock NEM server for testing
+    const mockServers = ['alice2.nem.ninja:7890', 'alice3.nem.ninja:7890', 'alice4.nem.ninja:7890'];
+    let i = Math.floor(Math.random() * mockServers.length);
+    console.log("using NEM Server "+mockServers[i]+" which is number "+i+" of "+mockServers.length+" available NEM servers");
+    return mockServers[i];
   }
 }
